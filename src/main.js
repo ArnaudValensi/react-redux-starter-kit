@@ -16,10 +16,10 @@ const store = configureStore(initialState);
 
 // Configure history for react-router
 const browserHistory = useRouterHistory(createBrowserHistory)({
-  basename: __BASENAME__
+  basename: __BASENAME__,
 });
 const history = syncHistoryWithStore(browserHistory, store, {
-  selectLocationState: (state) => state.router
+  selectLocationState: (state) => state.router,
 });
 
 // Now that we have the Redux store, we can create our routes. We provide

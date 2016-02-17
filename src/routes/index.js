@@ -1,3 +1,4 @@
+/* eslint no-unused-vars: [2, { "args": "none" }] */
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 

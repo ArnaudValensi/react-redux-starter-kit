@@ -25,17 +25,18 @@ export class HomeView extends React.Component<void, Props, void> {
   static propTypes = {
     counter: PropTypes.number.isRequired,
     doubleAsync: PropTypes.func.isRequired,
-    increment: PropTypes.func.isRequired
+    increment: PropTypes.func.isRequired,
   };
 
-  render () {
+  render() {
     return (
       <div className='container text-center'>
         <div className='row'>
           <div className='col-xs-2 col-xs-offset-5'>
             <img className={classes.duck}
               src={DuckImage}
-              alt='This is a duck, because Redux.' />
+              alt='This is a duck, because Redux.'
+            />
           </div>
         </div>
         <h1>Welcome to the React Redux Starter Kit</h1>
@@ -57,9 +58,9 @@ export class HomeView extends React.Component<void, Props, void> {
 }
 
 const mapStateToProps = (state) => ({
-  counter: state.counter
+  counter: state.counter,
 });
 export default connect((mapStateToProps), {
   increment: () => increment(1),
-  doubleAsync
+  doubleAsync,
 })(HomeView);

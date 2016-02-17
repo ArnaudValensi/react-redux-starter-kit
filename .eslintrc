@@ -1,8 +1,7 @@
 {
   "parser"  : "babel-eslint",
   "extends" : [
-    "standard",
-    "standard-react"
+    "airbnb"
   ],
   "plugins" : [
     "flow-vars"
@@ -20,8 +19,19 @@
   },
   "rules": {
     "semi" : [2, "always"],
-    "space-infix-ops": 0,
-    "max-len": [2, 120, 2],
+    "react-in-jsx-scope": 0,
+    "no-param-reassign": [2, {"props": false}],
+    "jsx-quotes": [2, "prefer-single"],
+    "func-names": 0,
+    "no-console": 0,
+    "one-var": 0,
+    "new-cap": 0,
+    "quote-props": 0,
+    "react/jsx-no-bind": 0,
+    "prefer-template": 0,
+    "arrow-body-style": 0,
+    "no-empty-label": 0,
+    "no-labels": 2,
     "flow-vars/define-flow-type": 1,
     "flow-vars/use-flow-type": 1
   }

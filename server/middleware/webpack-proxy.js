@@ -14,7 +14,7 @@ module.exports = function (options) {
     throw new Error('miss options');
   }
 
-  return function * proxy (next) {
+  return function * proxy(next) {
     // CHANGE from original (popmore, Oct. 9, 2015, da449f7b1d746d7443908b9a43eb4bf447467f5c)
     var path = this.originalUrl;
     var url = resolve(path, options);
@@ -68,7 +68,7 @@ module.exports = function (options) {
   };
 };
 
-function resolve (path, options) {
+function resolve(path, options) {
   var url = options.url;
   if (url) {
     if (!/^http/.test(url)) {
@@ -88,11 +88,11 @@ function resolve (path, options) {
   return options.host ? join(options.host, path) : null;
 }
 
-function ignoreQuery (url) {
+function ignoreQuery(url) {
   return url ? url.split('?')[0] : null;
 }
 
-function getParsedBody (ctx) {
+function getParsedBody(ctx) {
   var body = ctx.request.body;
   if (body === undefined || body === null) {
     return undefined;
@@ -108,7 +108,7 @@ function getParsedBody (ctx) {
   return body;
 }
 
-function pipeRequest (readable, requestThunk) {
+function pipeRequest(readable, requestThunk) {
   return function (cb) {
     readable.pipe(requestThunk(cb));
   };
