@@ -11,20 +11,20 @@ export default function (compiler, publicPath) {
 
   const middleware = WebpackDevMiddleware(compiler, {
     publicPath,
-    contentBase: paths.base(config.dir_client),
+    contentBase: paths.client(),
     hot: true,
     quiet: config.compiler_quiet,
     noInfo: config.compiler_quiet,
     lazy: false,
-    stats: config.compiler_stats
+    stats: config.compiler_stats,
   });
 
   return async function koaWebpackDevMiddleware(ctx, next) {
-    let hasNext = await applyExpressMiddleware(middleware, ctx.req, {
+    let hasNext = await applyExpressMiddleware(middleware, ctx.req, { // eslint-disable-line
       end: (content) => (ctx.body = content),
-      setHeader: function () {
-        ctx.set.apply(ctx, arguments);
-      }
+      setHeader(...args) {
+        ctx.set.apply(ctx, args);
+      },
     });
 
     if (hasNext) {

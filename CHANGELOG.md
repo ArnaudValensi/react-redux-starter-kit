@@ -1,6 +1,160 @@
 Changelog
 =========
 
+3.0.0-alpha.0
+-------------
+
+### Improvements
+* Migrated to Fractal Project Structure, huge thanks to [justingreenberg](https://github.com/justingreenberg). See https://github.com/davezuko/react-redux-starter-kit/pull/684 for details and discussion.
+
+2.0.0
+-----
+
+### Features
+* Upgraded `eslint-plugin-react` to `^5.0.0`
+* Upgraded `fs-extra` to `^0.28.0`
+
+### Improvements
+* Updated syntax used for `createStore` to match `redux@^3.1.0`
+* Cleaned up `connect` decorator in `HomeView`
+* Cleaned up flow types in `HomeView`
+
+2.0.0-alpha.5
+-------------
+
+### Features
+* Upgraded `flow-bin` to `0.23.0`
+* Upgraded `fs-extra` to `^0.27.0`
+
+### Improvements
+* Minor cleanup in Karma configuration
+* Added missing node-style index files in blueprints
+
+### Fixes
+* Modified webpack manifest initialization to prevent syntax errors in some environments (https://github.com/davezuko/react-redux-starter-kit/issues/572)
+
+2.0.0-alpha.4
+-------------
+
+### Features
+* Upgraded `react` to `^15.0.0`
+* Upgraded `react-dom` to `^15.0.0`
+* Upgraded `react-addons-test-utils` to `^15.0.0`
+* Upgraded `eslint-plugin-flow-vars` to `^0.3.0`
+
+### Improvements
+* Updated `npm run deploy` to be environment agnostic (no longer forces `production`)
+* Added `npm run deploy:prod` (forces `production`, acts as old `npm run deploy`)
+* Added `npm run deploy:dev` (forces `development`)
+
+### Fixes
+* Removed `strip_root` option in Flow to support Nuclide
+* Updated webpack development configuration to use correct `public_path`
+
+
+2.0.0-alpha.3
+-------------
+
+### Features
+* Upgraded `flow-interfaces` to `^0.6.0`
+
+### Improvements
+* Moved dependencies needed for production builds from devDependencies to regular dependencies
+
+### Fixes
+* Production configuration now generates assets with absolute rather than relative paths
+
+### Deprecations
+* Removed `eslint-loader` for performance reasons
+
+2.0.0-alpha.2
+-------------
+
+### Features
+* Upgraded `eslint` to `^2.4.0`
+* Upgraded `babel-eslint` to `^6.0.0-beta.6`
+* Upgraded `better-npm-run` to `0.0.8`
+* Upgraded `phantomjs-polyfill` to `0.0.2`
+* Upgraded `karma-mocha-reporter` to `^2.0.0`
+* Upgraded `webpack` to `^1.12.14`
+* Upgraded `redux-thunk` to `^2.0.0`
+
+### Improvements
+* Added `index.js` files for blueprints for convenient imports
+
+### Fixes
+* Removed some `cssnano` options that caused potential conflicts with css modules
+* Updated flow to understand global webpack definitions
+
+2.0.0-alpha.1
+-------------
+
+### Features
+* Upgraded `react-router-redux` from `^4.0.0-beta` to `^4.0.0`
+
+2.0.0-alpha.0
+-------------
+
+### Features
+* Integrated with [redux-cli](https://github.com/SpencerCDixon/redux-cli)
+* Added support for [Flowtype](http://flowtype.org/)
+* Added `npm run flow:check` script
+* Added [chai-enzyme](https://github.com/producthunt/chai-enzyme)
+* Added `babel-plugin-transform-react-constant-elements` in production
+* Added `babel-plugin-transform-react-remove-prop-types` in production
+* Added `eslint-plugin-flowvars`
+* Added `better-npm-run`
+* Added loader for `.otf` files
+* Added `nodemon` for local server development
+* Added placeholder favicon, `humans.txt`, and `robots.txt`
+* Replaced `express` with `koa@^2.0.0-alpha`
+* Added `koa-proxy` with config support
+* Added `koa-conntect-history-api-fallback`
+* Upgraded `eslint` to `^2.0.0`
+* Upgraded `babel-eslint` to `^5.0.0`
+* Upgraded `eslint-plugin-react` to `^4.0.0`
+* Upgraded `yargs` to `^4.0.0`
+* Upgraded `html-webpack-plugin` from `^1.6.1` to `^2.7.1`
+* Upgraded `react-router` to `^2.0.0`
+* Replaced `redux-simple-router` with `react-router-redux`
+* Replaced `phantomjs` with `phantomjs-prebuilt`
+* Replaced Karma spec reporter with mocha reporter
+
+### Improvements
+* Webpack optimization plugins are now correctly used only in production
+* Added ability to simultaneously use CSS modules and regular CSS
+* Added `karma-webpack-with-fast-source-maps` for selective and faster test rebuilds
+* Simplified environment-based webpack configuration
+* Fixed CSS being minified twice with both `cssnano` and `css-loader`
+* Updated `cssnano` to not use unsafe options by default
+* Redux devtools now looks for the browser extension if available
+* Added webpack entry point for tests to replace file globs in Karma
+* Made Webpack compiler script generic so it can accept any webpack configuration file
+* Added sample tests for counter redux module
+* Replaced `react-hmre` with `redbox-react` and `react-transform-hmr`
+* Disabled verbose uglify warnings during compilation
+* Updated route definition file to have access to the redux store
+* Updated server start message so link is clickable
+* `ExtractTextPlugin` is now correctly used whenever HMR is disabled
+* `npm run deploy` now cleans out `~/dist` directory
+* Miscellaneous folder structure improvements
+* Removed unnecessary `bin` file for Karma
+* Removed unnecessary `NotFoundView`
+* Re-enabled support for `.jsx` files
+* Specified compatible Node and NPM engines
+
+### Fixes
+* Fixed some development-only code not being stripped from production bundles
+* Added rimraf for `~/dist` clearing to support Windows users
+* Fixed miscellaneous path issues for Windows users
+* Fixed source maps for Sass files
+* Updated server start debug message to display correct host
+
+### Deprecations
+* Removed `redux-actions`
+* Removed `dotenv`
+* Removed `add-module-exports` babel plugin
+
 1.0.0
 -----
 

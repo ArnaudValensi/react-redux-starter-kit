@@ -4,9 +4,9 @@ import webpack from 'webpack';
 import webpackConfig from '../build/webpack.config';
 import historyApiFallback from 'koa-connect-history-api-fallback';
 import serve from 'koa-static';
+import proxy from 'koa-proxy';
 import _debug from 'debug';
 import config from '../config';
-import webpackProxyMiddleware from './middleware/webpack-proxy';
 import webpackDevMiddleware from './middleware/webpack-dev';
 import webpackHMRMiddleware from './middleware/webpack-hmr';
 
@@ -14,11 +14,16 @@ const debug = _debug('app:server');
 const paths = config.utils_paths;
 const app = new Koa();
 
+// Enable koa-proxy if it has been enabled in the config.
+if (config.proxy && config.proxy.enabled) {
+  app.use(convert(proxy(config.proxy.options)));
+}
+
 // This rewrites all routes requests to the root /index.html file
 // (ignoring file requests). If you want to implement isomorphic
 // rendering, you'll want to remove this middleware.
 app.use(convert(historyApiFallback({
-  verbose: false
+  verbose: false,
 })));
 
 // ------------------------------------
@@ -29,11 +34,6 @@ if (config.env === 'development') {
 
   // Enable webpack-dev and webpack-hot middleware
   const { publicPath } = webpackConfig.output;
-
-  if (config.proxy && config.proxy.enabled) {
-    const options = config.proxy.options;
-    app.use(convert(webpackProxyMiddleware(options)));
-  }
 
   app.use(webpackDevMiddleware(compiler, publicPath));
   app.use(webpackHMRMiddleware(compiler));
@@ -54,7 +54,7 @@ if (config.env === 'development') {
   // Serving ~/dist by default. Ideally these files should be served by
   // the web server and not the app server, but this helps to demo the
   // server in production.
-  app.use(convert(serve(paths.base(config.dir_dist))));
+  app.use(convert(serve(paths.dist())));
 }
 
 export default app;

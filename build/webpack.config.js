@@ -15,15 +15,15 @@ const webpackConfig = {
   target: 'web',
   devtool: config.compiler_devtool,
   resolve: {
-    root: paths.base(config.dir_client),
-    extensions: ['', '.js', '.jsx']
+    root: paths.client(),
+    extensions: ['', '.js', '.jsx', '.json'],
   },
   module: {}
 };
 // ------------------------------------
 // Entry Points
 // ------------------------------------
-const APP_ENTRY_PATH = paths.base(config.dir_client) + '/main.js';
+const APP_ENTRY_PATH = paths.client('main.js');
 
 webpackConfig.entry = {
   app: __DEV__
@@ -37,8 +37,8 @@ webpackConfig.entry = {
 // ------------------------------------
 webpackConfig.output = {
   filename: `[name].[${config.compiler_hash_type}].js`,
-  path: paths.base(config.dir_dist),
-  publicPath: config.compiler_public_path
+  path: paths.dist(),
+  publicPath: config.compiler_public_path,
 };
 
 // ------------------------------------
@@ -81,14 +81,27 @@ if (__DEV__) {
 
 // Don't split bundles during testing, since we only want import one bundle
 if (!__TEST__) {
-  webpackConfig.plugins.push(new webpack.optimize.CommonsChunkPlugin({
-    names: ['vendor']
-  }));
+  webpackConfig.plugins.push(
+    new webpack.optimize.CommonsChunkPlugin({
+      names: ['vendor']
+    })
+  )
 }
 
 // ------------------------------------
 // Pre-Loaders
 // ------------------------------------
+/*
+[ NOTE ]
+We no longer use eslint-loader due to it severely impacting build
+times for larger projects. `npm run lint` still exists to aid in
+deploy processes (such as with CI), and it's recommended that you
+use a linting plugin for your IDE in place of this loader.
+
+If you do wish to continue using the loader, you can uncomment
+the code below and run `npm i --save-dev eslint-loader`. This code
+will be removed in a future release.
+
 webpackConfig.module.preLoaders = [{
   test: /\.(js|jsx)$/,
   loader: 'eslint',
@@ -99,6 +112,7 @@ webpackConfig.eslint = {
   configFile: paths.base('.eslintrc'),
   emitWarning: __DEV__
 };
+*/
 
 // ------------------------------------
 // Loaders
@@ -113,25 +127,8 @@ webpackConfig.module.loaders = [{
     plugins: ['transform-runtime'],
     presets: ['es2015', 'react', 'stage-0'],
     env: {
-      development: {
-        plugins: [
-          ['react-transform', {
-            transforms: [{
-              transform: 'react-transform-hmr',
-              imports: ['react'],
-              locals: ['module']
-            }, {
-              transform: 'react-transform-catch-errors',
-              imports: ['react', 'redbox-react']
-            }]
-          }]
-        ]
-      },
       production: {
-        plugins: [
-          'transform-react-remove-prop-types',
-          'transform-react-constant-elements'
-        ]
+        presets: ['react-optimize']
       }
     }
   }
@@ -157,7 +154,7 @@ const PATHS_TO_TREAT_AS_CSS_MODULES = [
 // If config has CSS modules enabled, treat this project's styles as CSS modules.
 if (config.compiler_css_modules) {
   PATHS_TO_TREAT_AS_CSS_MODULES.push(
-    paths.base(config.dir_client).replace(/[\^\$\.\*\+\-\?\=\!\:\|\\\/\(\)\[\]\{\}\,]/g, '\\$&')
+    paths.client().replace(/[\^\$\.\*\+\-\?\=\!\:\|\\\/\(\)\[\]\{\}\,]/g, '\\$&') // eslint-disable-line
   )
 }
 
@@ -182,7 +179,7 @@ if (isUsingCSSModules) {
       'postcss',
       'sass?sourceMap'
     ]
-});
+  })
 
   webpackConfig.module.loaders.push({
     test: /\.css$/,
@@ -234,6 +231,9 @@ webpackConfig.postcss = [
     discardComments: {
       removeAll: true
     },
+    discardUnused: false,
+    mergeIdents: false,
+    reduceIdents: false,
     safe: true,
     sourcemap: true
   })
@@ -263,10 +263,10 @@ if (!__DEV__) {
   webpackConfig.module.loaders.filter((loader) =>
     loader.loaders && loader.loaders.find((name) => /css/.test(name.split('?')[0]))
   ).forEach((loader) => {
-    const [first, ...rest] = loader.loaders;
-    loader.loader = ExtractTextPlugin.extract(first, rest.join('!'));
-    delete loader.loaders;
-  });
+    const [first, ...rest] = loader.loaders
+    loader.loader = ExtractTextPlugin.extract(first, rest.join('!'))
+    Reflect.deleteProperty(loader, 'loaders')
+  })
 
   webpackConfig.plugins.push(
     new ExtractTextPlugin('[name].[contenthash].css', {

@@ -45,12 +45,13 @@ const karmaConfig = {
         }
       ])
     },
+    // Enzyme fix, see:
+    // https://github.com/airbnb/enzyme/issues/47
     externals: {
       ...webpackConfig.externals,
-      cheerio: 'window',
+      'react/addons': true,
       'react/lib/ExecutionEnvironment': true,
       'react/lib/ReactContext': 'window',
-      'text-encoding': 'window'
     },
     sassLoader: webpackConfig.sassLoader
   },
@@ -62,7 +63,7 @@ const karmaConfig = {
   }
 };
 
-if (config.coverage_enabled) {
+if (config.globals.__COVERAGE__) {
   karmaConfig.reporters.push('coverage');
   karmaConfig.webpack.module.preLoaders = [{
     test: /\.(js|jsx)$/,

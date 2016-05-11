@@ -3,11 +3,11 @@ export default function applyExpressMiddleware(fn, req, res) {
   const originalEnd = res.end;
 
   return new Promise((resolve) => {
-    res.end = function () {
-      originalEnd.apply(this, arguments);
+    res.end = function (...args) {
+      originalEnd.apply(this, args);
       resolve(false);
     };
-    fn(req, res, function () {
+    fn(req, res, () => {
       resolve(true);
     });
   });
